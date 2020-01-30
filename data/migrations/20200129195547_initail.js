@@ -1,7 +1,11 @@
 
 exports.up = async function(knex) {
+    //create user
   await knex.schema.createTable('user', (table) => {
       table.increments('id')
+      table.string('email')
+        .notNullable()
+        .unique()
       table.string('first_name', 50)
         .notNullable()
       table.string('last_name', 50)
@@ -11,8 +15,10 @@ exports.up = async function(knex) {
       table.string('username', 128)
         .notNullable()
         .unique()
+    
       table.string('password')
-        .notNullable()     
+        .notNullable()
+    
   })
 };
 
