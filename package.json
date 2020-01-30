@@ -1,0 +1,40 @@
+{
+  "name": "weight-lift-tracker",
+  "version": "1.0.0",
+  "description": "a bacnkend points that will create end Points for an app that will make the front end more user friendly",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "cross-env NODE_ENV=test jest --watch --verbose",
+    "server": "cross-env NODE_ENV=dev nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuildWeek-Weight-Lifting-Journal/Back-End.git"
+  },
+  "author": "Dangus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BuildWeek-Weight-Lifting-Journal/Back-End/issues"
+  },
+  "homepage": "https://github.com/BuildWeek-Weight-Lifting-Journal/Back-End#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jest": "^25.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.8",
+    "morgan": "^1.9.1",
+    "mysql": "^2.18.1",
+    "sqlite": "^3.0.3",
+    "sqlite3": "^4.1.1",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.0",
+    "nodemon": "^2.0.2"
+  }
+}
