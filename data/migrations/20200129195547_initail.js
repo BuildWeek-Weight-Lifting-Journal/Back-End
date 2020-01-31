@@ -21,22 +21,32 @@ exports.up = async function(knex) {
   })
   //create workout table
   await knex.schema.createTable('workouts', (table) => {
-    table.increments()
+    table.increments('id')
     table.date('date')
     table.string('upper_body')
     table.string('lower_body')
-    table.string('cor')
+    table.string('core')
+    table.integer('users_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('users')
   })
   //create journal
   await knex.schema.createTable('journal', (table) => {
-    table.increments()
+    table.increments('id')
     table.string('notes')
+    table.integer('user_id')
+      .unsigned()
+      .references('id')
+      .inTable('users')
   })
+ 
 
 };
 
-exports.down = async function(knex) {
-  await knex.schema.dropTableIfExists('notes')
+exports.down = async function(knex) {  
+  await knex.schema.dropTableIfExists('journal')
   await knex.schema.dropTableIfExists('workouts')
   await knex.schema.dropTableIfExists('users')
 };

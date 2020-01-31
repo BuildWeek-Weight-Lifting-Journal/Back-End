@@ -1,24 +1,24 @@
 const db = require('../../data/dbConfig')
 
 function find() {
-    return db('workouts')
+    return db('journal')
 }
 
 function findBy(filter) {
-    return db('workouts').where(filter)
+    return db('journal').where(filter)
 }
 
 function findById(id) {
-    return db('workouts').where({ id }).first()
+    return db('journal').where({ id }).first()
 }
 
 async function add(user) {
-    const [id] = await db('workouts').insert(user)
+    const [id] = await db('journal').insert(user)
     return findById(id)
 }
 
 function remove(id) {
-    return db('workouts').where({ id }).del()
+    return db('journal').where({ id }).del()
 }
 
 
