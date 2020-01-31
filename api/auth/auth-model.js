@@ -5,7 +5,7 @@ const jwtSecret = process.env.JWT_SECRET || 'secret should be set in env';
 const authenticate = require('../middleware/authenticate');
 
 // User Models
-const Users = require('./users-model.js');
+const Users = require('../user/users-model');
 
 // Register **Endpoint:** `/api/auth/register` 
 router.post('/register', (req, res) => {
