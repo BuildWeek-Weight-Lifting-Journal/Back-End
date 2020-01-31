@@ -1,10 +1,10 @@
 const express = require("express")
-const db = require("./user-model")
+const userModel = require("./user-model")
 
 const router = express.Router()
 
 router.get('/', (req, res) => {
-  db.find()
+  userModel.find()
       .then(users => {
           res.status(200).json(users)
       })
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params
 
-  db.findById(id)
+  userModel.findById(id)
       .then(user => {
           if (user) {
               res.status(200).json(user)
@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
 router.get('/:id/workouts', (req, res) => {
   const { id } = req.params
   
-  db.findWorkouts(id)
+  userModel.findWorkouts(id)
       .then(workouts => {
           res.status(200).json(workouts)
       })
@@ -47,7 +47,7 @@ router.get('/:id/workouts', (req, res) => {
 router.get('/:id/match', (req, res) => {
   const { id } = req.params;
 
-  db.findMatch(id)
+  userModel.findMatch(id)
       .then(matches => {
           res.status(200).json(matches)
       })
@@ -61,7 +61,7 @@ router.put('/:id', (req, res) => {
   const { id } = req.params;
   const user = req.body;
 
-  db.update(user, id)
+  userModel.update(user, id)
       .then(user => {
           if (!user) {
               res.status(400).json({message: "Unable to update user profile"})
@@ -78,7 +78,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
-  db.remove(id)
+  userModel.remove(id)
   .then(count => {
       if(count > 0) {
           res.status(200).json({message: `Successfully deleted ${count} account`})
@@ -95,7 +95,7 @@ router.delete('/:id', (req, res) => {
 router.get('/:id/workouts/:workoutId', (req, res) => {
   const { workoutId } = req.params
 
-  db.findWorkoutById(workoutId)
+  userModel.findWorkoutById(workoutId)
       .then(workout => {
           res.status(200).json(workout)
       })
@@ -109,7 +109,7 @@ router.post('/:id/workout', (req, res) => {
   const { id } = req.params;
   const workout = req.body;
 
-  db.insertWorkout({...workout, user_id: id})
+  userModel.insertWorkout({...workout, user_id: id})
       .then(workout => {
           res.status(200).json(workout)
       })
@@ -123,7 +123,7 @@ router.put('/:id/workouts/:workoutId', (req, res) => {
   const { workoutId } = req.params;
   const workout = req.body;
 
-  db.updateWorkout(workout, workoutId)
+  userModel.updateWorkout(workout, workoutId)
       .then(count => {
           if (count > 0) {
               res.status(200).json({messgae: `${count} workout was updated`})
@@ -140,7 +140,7 @@ router.put('/:id/workouts/:workoutId', (req, res) => {
 router.delete('/:id/workouts/:workoutId', (req, res) => {
   const { workoutId } = req.params;
 
-  db.removeWorkout(workoutId)
+  userModel.removeWorkout(workoutId)
       .then(count=> {
           if(count > 0) {
               res.status(200).json({message: `${count} workout has been removed`})
