@@ -1,7 +1,7 @@
 
 exports.up = async function(knex) {
     //create user
-  await knex.schema.createTable('user', (table) => {
+  await knex.schema.createTable('users', (table) => {
       table.increments('id')
       table.string('email')
         .notNullable()
@@ -10,7 +10,7 @@ exports.up = async function(knex) {
         .notNullable()
       table.string('last_name', 50)
         .notNullable()
-      table.float('age')
+      table.integer('age')
         .notNullable()
       table.string('username', 128)
         .notNullable()
@@ -23,5 +23,5 @@ exports.up = async function(knex) {
 };
 
 exports.down = async function(knex) {
-  await knex.schema.dropTableIfExist('user')
+  await knex.schema.dropTableIfExists('user')
 };

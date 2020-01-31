@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET || 'secret should be set in env';
-const authenticate = require('./authenticate-middleware.js');
+const authenticate = require('../middleware/authenticate');
 
 // User Models
 const Users = require('./users-model.js');
