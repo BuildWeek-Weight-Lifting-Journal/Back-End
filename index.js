@@ -9,6 +9,9 @@ const connectSessionKnex = require('connect-session-knex')
 require('dotenv').config()
 const server = express()
 const db = require('./data/dbConfig')
+
+const authenticate = require('./api/middleware/authenticate')
+const authRouter = require('./api/auth/auth-model')
 const port = process.env.PORT || 5000
 
 const knexSessionsStore = connectSessionKnex(session)
@@ -37,7 +40,7 @@ server.use(session(sessionConfig))
 server.use(express.json())
 
 server.get('/', (req, res) => {
-    res.send('<h1>Test</h1>')
+    res.sendFile(path.join(__dirname+'/../index.html'))
 })
 
 server.listen(port, () => console.log(`Server is running at port: ${port}`))
