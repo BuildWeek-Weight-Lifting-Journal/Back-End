@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const Users = require('../user/user-model')
+const db = require('../user/user-model')
 
 const generateToken = user => {
   const payload = {
@@ -16,13 +16,13 @@ const generateToken = user => {
 }
 
 router.post('/register', async (req, res) => {
-  // implement registration
+  // implement registration  
   let user = req.body
   const hash = bcrypt.hashSync(user.password, 12)
   user.password = hash
-
+console.log(req.body)
   try {
-    const registered = await Users.add(user)
+    const registered = await db.insert(user)    
     registered ? res.status(201).json(registered) : res.status(404)
   } catch(err) {
     res.status(500).json({ error: err.message})
@@ -34,7 +34,8 @@ router.post('/login', async (req, res) => {
   // implement login
   let { username, password } = req.body;
   try {
-    const login = await Users.findBy({ username }).first()
+    const login = await db.findBy({ username }).first()
+    
     if (login && bcrypt.compareSync(password, login.password)) {
       const token = generateToken(login)
       res.status(200).json({

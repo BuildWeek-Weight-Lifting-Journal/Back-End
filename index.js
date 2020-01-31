@@ -21,6 +21,7 @@ server.use('/api/users', auth, userRouter)
 
 server.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/index.html'))
+    
 })
 
 
