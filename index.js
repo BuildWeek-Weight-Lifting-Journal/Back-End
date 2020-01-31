@@ -1,6 +1,5 @@
 const express = require('express')
 const helmet = require('helmet')
-const morgan = require('morgan')
 const cors = require('cors')
 const path = require('path')
 
@@ -9,16 +8,16 @@ const server = express()
 
 const userRouter = require('./api/user/user-route')
 const authRouter = require('./api/auth/auth-router')
+const auth = require('./api/middleware/auth')
 const port = process.env.PORT || 5000
 
 
 server.use(helmet())
 server.use(cors())
-server.use(morgan('dev'))
 server.use(express.json())
 
 server.use('/api/auth', authRouter)
-server.use('api/users', userRouter)
+server.use('/api/users', auth, userRouter)
 
 server.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/index.html'))

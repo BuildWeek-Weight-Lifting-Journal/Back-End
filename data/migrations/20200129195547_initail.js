@@ -14,14 +14,29 @@ exports.up = async function(knex) {
         .notNullable()
       table.string('username', 128)
         .notNullable()
-        .unique()
-    
+        .unique()    
       table.string('password')
         .notNullable()
     
   })
+  //create workout table
+  await knex.schema.createTable('workouts', (table) => {
+    table.increments()
+    table.date('date')
+    table.string('upper_body')
+    table.string('lower_body')
+    table.string('cor')
+  })
+  //create journal
+  await knex.schema.createTable('journal', (table) => {
+    table.increments()
+    table.string('notes')
+  })
+
 };
 
 exports.down = async function(knex) {
-  await knex.schema.dropTableIfExists('user')
+  await knex.schema.dropTableIfExists('notes')
+  await knex.schema.dropTableIfExists('workouts')
+  await knex.schema.dropTableIfExists('users')
 };
