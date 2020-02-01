@@ -5,16 +5,14 @@ exports.seed = function(knex, Promise) {
       username: "user",
       password: "examplepass",
       first_name: "Some",
-      last_name: "User",
-      age: 26,
+      last_name: "User",      
       email: "user@email.com"     
      }, 
      {
        username: "john",
        password: "examplepass",
        first_name: "Johnathan",
-       last_name: "Doe",
-       age: 19,
+       last_name: "Doe",       
        email: "john@email.com"
        
       },
@@ -22,8 +20,7 @@ exports.seed = function(knex, Promise) {
       username: "jane",
       password: "examplepass",
       first_name: "Jane",
-      last_name: "Doe",
-      age: 30,
+      last_name: "Doe",      
       email: "jane@email.com"     
     }
   ]);
