@@ -2,7 +2,7 @@ const express = require("express")
 const userModel = require("./user-model")
 
 const router = express.Router()
-
+// this gets a list of all users
 router.get('/', (req, res) => {
   userModel.find()
       .then(users => {
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
           res.status(500).json({message: "Could not find users"})
       })
 });
-
+//this find user by id
 router.get('/:id', (req, res) => {
   const { id } = req.params
 
@@ -44,18 +44,18 @@ router.get('/:id/workouts', (req, res) => {
       })
 });
 
-router.get('/:id/match', (req, res) => {
-  const { id } = req.params;
+// router.get('/:id/match', (req, res) => {
+//   const { id } = req.params;
 
-  userModel.findMatch(id)
-      .then(matches => {
-          res.status(200).json(matches)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to find Matches for this user"})
-      })
-});
+//   userModel.findMatch(id)
+//       .then(matches => {
+//           res.status(200).json(matches)
+//       })
+//       .catch(err => {
+//           console.log(err)
+//           res.status(500).json({message: "Unable to find Matches for this user"})
+//       })
+// });
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
@@ -108,8 +108,9 @@ router.get('/:id/workouts/:workoutId', (req, res) => {
 router.post('/:id/workout', (req, res) => {
   const { id } = req.params;
   const workout = req.body;
+  console.log(req.params, req.body)
 
-  userModel.insertWorkout({...workout, user_id: id})
+  userModel.insertWorkout({...workout, users_id: id})
       .then(workout => {
           res.status(200).json(workout)
       })

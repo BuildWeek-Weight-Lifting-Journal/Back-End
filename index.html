@@ -146,10 +146,10 @@
           <h4 class="moreInfo" onclick="{showContent('getEndpoints')}">Get</h4>
           <div id="getEndpoints" class="hid">
           <ul>
-            <li class="moreInfo" onclick="{showContent('getEvents')}">Get All User</li>            
-            <li class="moreInfo" onclick="{showContent('getEvent')}">Get User by ID</li>
-            <li class="moreInfo" onclick="{showContent('getGuestsbyEvent')}">Get All Workout</li>
-            <li class="moreInfo" onclick="{showContent('getGuests')}">Get Workout by ID</li>
+            <li class="moreInfo" onclick="{showContent('getusers')}">Get All User</li>            
+            <li class="moreInfo" onclick="{showContent('getUserById')}">Get User by ID</li>
+            <li class="moreInfo" onclick="{showContent('getWorkoutByUser')}">Get All Workout</li>
+            <li class="moreInfo" onclick="{showContent('getUserWorkoutById')}">Get Workout by ID</li>
             <li class="moreInfo" onclick="{showContent('getGuest')}">Get all Journal</li>
             <li class="moreInfo" onclick="{showContent('getFoodNeeded')}">Get Journal by ID</li>           
           </ul>
@@ -212,7 +212,8 @@
         <li>creating journal object endpoint</li>
         <li>Created workouts endpoint</li>
         <li>Enpdoints active for workout, users, journal - get, add, update, and delete </li>
-        <li>deployed to heroku</li>        
+        <li>deployed to heroku</li> 
+        <li>All endpoints are working updating documentation to reflect endpoint</li>       
       </ul>
     </div>
   
@@ -247,8 +248,12 @@
       <p>This is what returns on a individual workout request.</p>
       <code>
         {
-          coming soon!
-          
+          "id": 4,
+          "date": "12-12-2019",
+          "upper_body": "chest",
+          "lower_body": "None",
+          "core": "abds",
+          "users_id": 1
         }
       </code>
   
@@ -297,14 +302,32 @@
         </code>
         <p><strong>Sample Request:</strong> </p>
         <code>
+          {
+            "username": "usde",
+            "password": "examplepass",
+            "first_name": "Some",
+            "last_name": "User",		
+            "email": "useredr@email.com"     
+          }
           <br />
         </code>
         <p><strong>Expected Return:</strong> </p>
         <code>
+          {
+            "id": 5,
+            "email": "useredr@email.com",
+            "first_name": "Some",
+            "last_name": "User",
+            "username": "usderer",
+            "password": "$2a$12$XE0Pc6COTGemu2vrnVOlvuOZ209yt.ivZJSB1cf5ub33zCfjO9x9C"
+          }
             <br />
         </code>
         <p><strong>Expected Return if Fails:</strong> </p>
         <code>
+          {
+            "error": "insert into `users` (`email`, `first_name`, `last_name`, `password`) values ('useredr@email.com', 'Some', 'User', '$2a$12$AC1Tb4cC66wrPKNhLyBfqO3N0jovP9jNy1wPvFuvv.xGDOAa7QV42') - SQLITE_CONSTRAINT: NOT NULL constraint failed: users.username"
+          }
             <br />
         </code>
     </div>
@@ -366,8 +389,7 @@
             "password": "password", <br />
             "email": "user@email.com", <br />
             "firstname": "Johnathan", <br />
-            "lastname": "Doe", <br />
-            "preferredname": "John", <br />
+            "lastname": "Doe", <br />            
             "group_id": null <br />
           }
         </code>
@@ -420,13 +442,13 @@
   <div id="get_Event_Endpoints">
   
     <!-- Event Endpoint - Get All --> 
-    <div id="getEvents" class="hid">
-      <h3 onclick="{showContent('getEvents')}">Event Endpoints - Get All Events - Simple</h3>
-        <p><strong>Endpoint:</strong> `/api/events/`</p>
+    <div id="getusers" class="hid">
+      <h3 onclick="{showContent('getusers')}">User Endpoints - Get All User - Simple</h3>
+        <p><strong>Endpoint:</strong> `/api/users/`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
-          Get a list of all event objects - simple return
+          Get a list of all user objects - simple return
         </code>
         <p><strong>Sample Request:</strong> </p>
         <code>
@@ -435,14 +457,13 @@
         <code>
           [ <br />
           <div class="ident1">
-            { <br />
-              "id": 1, <br />
-              "eventname": "John's First Potluck", <br />
-              "description": "Birthday Party Potluck for Jane.", <br />
-              "eventdate": "8-23-2019", <br />
-              "eventtime": "6:00 PM", <br />
-              "location": "John's Backyard", <br />
-              "user_id": 2 <br />
+            {
+              "id": 1,
+              "email": "useehjfdnkjdr@email.com",
+              "first_name": "Some",
+              "last_name": "User",
+              "username": "user",
+              "password": "examplepass"
             } <br />
           </div>
           ]
@@ -452,73 +473,17 @@
           status: 500 <br />
           { message: 'Failed to get results.' }
         </code>
-    </div>
-  
-    <!-- Event Endpoint - Get All - Detailed --> 
-    <div id="getAllEvents" class="hid">
-      <h3 onclick="{showContent('getAllEvents')}">Event Endpoints - Get All Events - Detailed</h3>
-        <p><strong>Endpoint:</strong> `/api/events/:username/all`</p>
-        <p><strong>Type:</strong> `GET`</p>
-        <p><strong>Description:</strong> </p>
-        <code>
-          Get a list of all event objects -detailed return <br />
-          This endpoint should return detailed event information for each event, <br />
-          limited to only the user's events based on the username supplied in the endpoint.
-        </code>
-        <p><strong>Sample Request:</strong> </p>
-        <code>
-          <br />
-        </code>
-        <p><strong>Expected Return:</strong> <span class="comment">for username = john</span></p>
-        <code>
-          [ <br />
-          <div class="ident1">
-          { <br />
-            "id": 1, <br />
-            "eventname": "John's First Potluck", <br />
-            "description": "Birthday Party Potluck for Jane.", <br />
-            "eventdate": "8-23-2019", <br />
-            "eventtime": "6:00 PM", <br />
-            "location": "John's Backyard", <br />
-            "username": "john", <br />
-            "guests": [ <br />
-              <div class="ident1">
-              { <br />
-                "guestname": "Jane", <br />
-                "guestemail": "jane@email.com", <br />
-                "RSVP": "Yes" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jack", <br />
-                "guestemail": "jack@email.com", <br />
-                "RSVP": "No" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jill", <br />
-                "guestemail": "jill@email.com", <br />
-                "RSVP": null <br />
-              } <br />
-              </div>
-            ] <br />
-          } <br />
-          </div>
-          ]
-        </code>
-        <p><strong>Expected Return if Fails:</strong> </p>
-        <code>
-          status code: 500<br />
-          { message: 'Failed to get results.' }
-        </code>
-    </div>
+    </div>  
+    
   
     <!-- Event Endpoint - Get Event --> 
-    <div id="getEvent" class="hid">
-      <h3 onclick="{showContent('getEvent')}">Event Endpoints - Get Event </h3>
-        <p><strong>Endpoint:</strong> `/api/events/{id}`</p>
+    <div id="getUserById" class="hid">
+      <h3 onclick="{showContent('getUserById')}">User Endpoints - Get User by ID </h3>
+        <p><strong>Endpoint:</strong> `/api/users/{id}`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
-          Get detailed information about an event
+          Get detailed information about an user
         </code>
         <p><strong>Expected Input:</strong> </p>
         <code>
@@ -530,66 +495,13 @@
         </code>
         <p><strong>Expected Return:</strong> </p>
         <code>
-          {<br /><div class="ident1">
-            "eventname": "John's First Potluck", <br />
-            "description": "Birthday Party Potluck for Jane.", <br />
-            "eventdate": "8-23-2019", <br />
-            "eventtime": "6:00 PM", <br />
-            "location": "John's Backyard", <br />
-            "username": "john", <br />
-            "food": [
-            <div class="ident1">{ <br />
-              "id": 1, <br />
-              "foodname": "Hamburgers", <br />
-              "food_needed_id": 1, <br />
-              "quantity_needed": 24, <br />
-              "description": "hamburger meat", <br />
-              "category": "meat", <br />
-              "vegetarian": "0", <br />
-              "vegan": "0", <br />
-              "gutenfree": null, <br />
-              "bringing": [ <br /> 
-              <div class="ident1">
-                { <br /> 
-                  "guestname": "Jill", <br /> 
-                  "quantity": 12 <br /> 
-                }, <br /> 
-                { <br /> 
-                  "guestname": "Jack", <br /> 
-                  "quantity": 12 <br /> 
-                }</div>
-              ] <br /> 
-            }, <br /> 
-            { <br /> 
-              "id": 2, <br /> 
-              "foodname": "Hamburger Buns", <br /> 
-              "food_needed_id": 2, <br /> 
-              "quantity_needed": 24, <br /> 
-              "description": null, <br /> 
-              "category": "bread", <br /> 
-              "vegetarian": "1", <br /> 
-              "vegan": null, <br /> 
-              "gutenfree": "0", <br /> 
-              "bringing": [] <br /> 
-            }</div>
-            ], <br /> 
-            "guests": [ <br /> 
-            <div class="ident1">
-              { <br /> 
-                "guestname": "Jane", <br /> 
-                "guestemail": "jane@email.com" <br /> 
-              }, <br /> 
-              { <br /> 
-                "guestname": "Jack", <br /> 
-                "guestemail": "jack@email.com" <br /> 
-              }, <br /> 
-              { <br /> 
-                "guestname": "Jill", <br /> 
-                "guestemail": "jill@email.com" <br /> 
-              } <br /> 
-            </div>
-            ] <br />
-          </div>
+          {
+            "id": 1,
+            "email": "useehjfdnkjdr@email.com",
+            "first_name": "Some",
+            "last_name": "User",
+            "username": "user",
+            "password": "examplepass"
           }
         </code>
         <p><strong>Expected Return if Fails:</strong> </p>
@@ -600,13 +512,13 @@
     </div>
   
     <!-- Event Endpoint - Get Guests by Event --> 
-    <div id="getGuestsbyEvent" class="hid">
-      <h3 onclick="{showContent('getGuestsbyEvent')}">Event Endpoints - Get Guests by Event </h3>
-        <p><strong>Endpoint:</strong> `/api/events/{id}/guests`</p>
+    <div id="getWorkoutByUser" class="hid">
+      <h3 onclick="{showContent('getWorkoutByUser')}">Workout Endpoints - Get Guests by Workout </h3>
+        <p><strong>Endpoint:</strong> `/api/users/{id}/workout`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
-          Get a list of guests for an event
+          Get a list of user workout
         </code>
         <p><strong>Expected Input:</strong> </p>
         <code>
@@ -619,18 +531,38 @@
         <p><strong>Expected Return:</strong> </p>
         <code>
           [<br /><div class="ident1">
-              { <br />
-                "guestname": "Jane", <br />
-                "guestemail": "jane@email.com" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jack", <br />
-                "guestemail": "jack@email.com" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jill", <br />
-                "guestemail": "jill@email.com" <br />
-              } <br />
+            {
+              "id": 1,
+              "date": "12-12-2019",
+              "upper_body": "chest",
+              "lower_body": "None",
+              "core": "abs",
+              "users_id": 1
+            },<br/>
+            {
+              "id": 2,
+              "date": "11-12-2018",
+              "upper_body": "arms",
+              "lower_body": "none",
+              "core": "none",
+              "users_id": 1
+            },<br/>
+            {
+              "id": 4,
+              "date": "12-12-2019",
+              "upper_body": "chdest",
+              "lower_body": "Nodne",
+              "core": "abds",
+              "users_id": 1
+            },<br/>
+            {
+              "id": 5,
+              "date": "12-12-2019",
+              "upper_body": "chfdfdest",
+              "lower_body": "Nofsdfdne",
+              "core": "abds",
+              "users_id": 1
+            },<br />
           </div>
           ]
         </code>
@@ -642,8 +574,8 @@
     </div>
   
     <!-- Event Endpoint - Get Guests --> 
-    <div id="getGuests" class="hid">
-      <h3 onclick="{showContent('getGuests')}">Event Endpoints - Get All Guests </h3>
+    <div id="getUserWorkoutById" class="hid">
+      <h3 onclick="{showContent('getUserWorkoutById')}">Event Endpoints - Get All Guests </h3>
         <p><strong>Endpoint:</strong> `/api/guests/`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
@@ -684,7 +616,7 @@
   
     <!-- Event Endpoint - Get Guest --> 
     <div id="getGuest" class="hid">
-      <h3 onclick="{showContent('getGuests')}">Event Endpoints - Get Guest by id </h3>
+      <h3 onclick="{showContent('getUserWorkoutById')}">Event Endpoints - Get Guest by id </h3>
         <p><strong>Endpoint:</strong> `/api/guests/{id}`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
