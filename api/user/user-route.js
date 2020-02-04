@@ -1,157 +1,72 @@
-const express = require("express")
-const userModel = require("./user-model")
+const router = require('express').Router();
 
-const router = express.Router()
+const bcrypt = require('bcryptjs');
+const Users = require('./user-model');
 
-router.get('/', (req, res) => {
-  userModel.find()
-      .then(users => {
-          res.status(200).json(users)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Could not find users"})
-      })
-});
+router.get('/',  (req, res) => {
+    Users.find()
+    .then(users => {
+        res.status(200).json(users);
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
+})
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-
-  userModel.findById(id)
-      .then(user => {
-          if (user) {
-              res.status(200).json(user)
-          } else {
-              res.status(404).json({message: "user with this id does not exsist"})
-          }
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Could not find user"})
-      })
-});
-
-router.get('/:id/workouts', (req, res) => {
-  const { id } = req.params
-  
-  userModel.findWorkouts(id)
-      .then(workouts => {
-          res.status(200).json(workouts)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to find workouts"})
-      })
-});
-
-router.get('/:id/match', (req, res) => {
-  const { id } = req.params;
-
-  userModel.findMatch(id)
-      .then(matches => {
-          res.status(200).json(matches)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to find Matches for this user"})
-      })
-});
+router.get('/:id',  (req, res) => {
+    Users.findById(req.params.id)
+    .then(user => {
+        res.status(200).json(user);
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
 
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const user = req.body;
+    const {id} = req.params
+    let changes = req.body;
+    if (!changes.firstName) {
+        res.status(422).json({message: "Missing fields: first name"})
+    }
+    if (!changes.lastName) {
+        res.status(422).json({message: "Missing fields: last name"})
+    }
+    if (!changes.email) {
+        res.status(422).json({message: "Missing fields: email"})
+    }
+    if (!changes.password) {
+        res.status(422).json({message: "Missing fields: password"})
+    }
 
-  userModel.update(user, id)
-      .then(user => {
-          if (!user) {
-              res.status(400).json({message: "Unable to update user profile"})
-          } else {
-              res.status(200).json(user)
-          }
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to update this account"})
-      })
-});
+    const hash = bcrypt.hashSync(changes.password, 10);
+    changes.password = hash
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
+    Users.update(id, changes)
+    .then(updated => {
+        if (updated) {
+            res.status(200).json({success: true, updated})
+        } else {
+            res.status(404).json({message: "This user could not be updated"})
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
 
-  userModel.remove(id)
-  .then(count => {
-      if(count > 0) {
-          res.status(200).json({message: `Successfully deleted ${count} account`})
-      } else {
-          res.status(400).json({message: "Account was not deleted successfully"})
-      }
-  })
-  .catch(err => {
-      console.log(err)
-      res.status(500).json({message: "Unable to delete this account"})
-  })
-});
+router.delete('/:id',  (req, res) => {
+    Users.remove(req.params.id)
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json({message: "This user has been removed from the database"})
+        } else {
+            res.status(404).json({message: "This user does not exist!"})
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
 
-router.get('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params
-
-  userModel.findWorkoutById(workoutId)
-      .then(workout => {
-          res.status(200).json(workout)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to find workout"})
-      })
-});
-
-router.post('/:id/workout', (req, res) => {
-  const { id } = req.params;
-  const workout = req.body;
-
-  userModel.insertWorkout({...workout, user_id: id})
-      .then(workout => {
-          res.status(200).json(workout)
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to add a new workout"})
-      })
-});
-
-router.put('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params;
-  const workout = req.body;
-
-  userModel.updateWorkout(workout, workoutId)
-      .then(count => {
-          if (count > 0) {
-              res.status(200).json({messgae: `${count} workout was updated`})
-          } else {
-              res.status(400).json({messgae: "Could not edit workout at this id"})
-          }
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: "Unable to edit workout"})
-      })
-});
-
-router.delete('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params;
-
-  userModel.removeWorkout(workoutId)
-      .then(count=> {
-          if(count > 0) {
-              res.status(200).json({message: `${count} workout has been removed`})
-          } else {
-              res.status(404).json({message: 'workout with this id not found'})
-          }
-      })
-      .catch(err => {
-          console.log(err)
-          res.status(500).json({message: 'Unable to delete workout'})
-      })
-});
-
-module.exports = router;
+module.exports = router
