@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
 const Exercises = require('./excercises-model');
-const restricted = require('../middleware/auth');
 
-router.get('/', restricted, (req, res) => {
+
+router.get('/',  (req, res) => {
     Exercises.find()
     .then(exercise => {
         res.status(200).json(exercise)
@@ -13,7 +13,7 @@ router.get('/', restricted, (req, res) => {
     })
 })
 
-router.get('/:id', restricted, (req, res) => {
+router.get('/:id',  (req, res) => {
     Exercises.findById(req.params.id)
     .then(exercise => {
         res.status(200).json(exercise)
@@ -23,7 +23,7 @@ router.get('/:id', restricted, (req, res) => {
     })
 })
 
-router.get('/regions/:region', restricted, (req, res) => {
+router.get('/regions/:region',  (req, res) => {
     const {region} = req.params
     Exercises.findByRegion(region)
     .then(exercise => {
@@ -35,7 +35,7 @@ router.get('/regions/:region', restricted, (req, res) => {
     })
 })
 
-router.post('/', restricted, (req, res) => {
+router.post('/',  (req, res) => {
     const newexercise = req.body
     if (!newexercise.name) {
         res.status(422).json({message: "Missing fields: name"})
@@ -52,7 +52,7 @@ router.post('/', restricted, (req, res) => {
     })
 })
 
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id',  (req, res) => {
     const {id} = req.params
     let changes = req.body;
     if (!changes.name) {
@@ -74,7 +74,7 @@ router.put('/:id', restricted, (req, res) => {
     })
 })
 
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id',  (req, res) => {
     Exercises.remove(req.params.id)
     .then(count => {
         if (count > 0) {

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
 const Jouexe = require('./je-model');
-const restricted = require('../middleware/auth');
 
-router.get('/', restricted, (req, res) => {
+
+router.get('/',  (req, res) => {
     Jouexe.find()
     .then(item => {
         res.status(200).json(item)
@@ -13,7 +13,7 @@ router.get('/', restricted, (req, res) => {
     })
 })
 
-router.get('/:id', restricted, (req, res) => {
+router.get('/:id',  (req, res) => {
     Jouexe.findById(req.params.id)
     .then(item => {
         console.log(item)
@@ -25,7 +25,7 @@ router.get('/:id', restricted, (req, res) => {
     })
 })
 
-router.post('/', restricted, (req, res) => {
+router.post('/',  (req, res) => {
     let newjouexe = req.body;
     if (!newjouexe.weight) {
         res.status(422).json({message: "Missing fields: weight"})
@@ -51,7 +51,7 @@ router.post('/', restricted, (req, res) => {
     })
 })
 
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id',  (req, res) => {
     const {id} = req.params
     let changes = req.body;
     if (!changes.weight) {
@@ -82,7 +82,7 @@ router.put('/:id', restricted, (req, res) => {
     })
 })
 
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id',  (req, res) => {
     Jouexe.remove(req.params.id)
     .then(count => {
         if (count > 0) {

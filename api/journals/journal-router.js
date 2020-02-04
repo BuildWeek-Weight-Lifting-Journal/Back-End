@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
 const Journals = require('./journal-model');
-const restricted = require('../middleware/auth');
 
-router.get('/', restricted, (req, res) => {
+
+router.get('/',  (req, res) => {
     Journals.find()
     .then(journal => {
         res.status(200).json(journal)
@@ -13,7 +13,7 @@ router.get('/', restricted, (req, res) => {
     })
 })
 
-router.get('/:id', restricted, (req, res) => {
+router.get('/:id',  (req, res) => {
     Journals.findById(req.params.id)
     .then(journal => {
         res.status(200).json(journal)
@@ -23,7 +23,7 @@ router.get('/:id', restricted, (req, res) => {
     })
 })
 
-router.get('/users/:userId', restricted, (req, res) => {
+router.get('/users/:userId',  (req, res) => {
     const {userId} = req.params
     Journals.findByUserId(userId)
     .then(journal => {
@@ -38,7 +38,7 @@ router.get('/users/:userId', restricted, (req, res) => {
     })
 })
 
-router.get('/exercises/:userId/:id', restricted, (req, res) => {
+router.get('/exercises/:userId/:id',  (req, res) => {
     const {id} = req.params
     const {userId} = req.params
     Journals.findExerciseByJournalByUserId(id, userId)
@@ -54,7 +54,7 @@ router.get('/exercises/:userId/:id', restricted, (req, res) => {
     })
 })
 
-router.post('/', restricted, (req, res) => {
+router.post('/',  (req, res) => {
     let newjournal = req.body;
     if (!newjournal.userId) {
         res.status(422).json({message: "Missing fields: userId"})
@@ -74,7 +74,7 @@ router.post('/', restricted, (req, res) => {
     })
 })
 
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id',  (req, res) => {
     const {id} = req.params
     let changes = req.body;
     if (!changes.name) {
@@ -96,7 +96,7 @@ router.put('/:id', restricted, (req, res) => {
     })
 })
 
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id',  (req, res) => {
     Journals.remove(req.params.id)
     .then(count => {
         if (count > 0) {
