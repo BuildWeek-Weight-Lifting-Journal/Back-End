@@ -1,41 +1,60 @@
-const express = require('express')
-const bcrypt = require('bcryptjs')
-const { generateToken } = require('../auth/generateToken')
-const userModel = require('../user/user-model')
-const router = express.Router()
+const router = require('express').Router();
 
-router.post('/register', async (req, res) => {
-  // implement registration  
-  let user = req.body
-  const hash = bcrypt.hashSync(user.password, 12)
-  user.password = hash
-console.log(req.body)
-  try {
-    const registered = await userModel.insert(user)    
-    registered ? res.status(201).json(registered) : res.status(404)
-  } catch(err) {
-    res.status(500).json({ error: err.message})
+const bcrypt = require('bcryptjs');
 
-  }
-});
+const tokenMaker = require('../auth/generateToken');
+const Users = require('../user/user-model');
 
-router.post("/login", async (req, res, next) => {
-  try {
-    const { username, password } = req.body
-    const user = await userModel.findBy({ username }).first()
-    const passwordValid = await bcrypt.compare(password, user.password)
-
-    if (user && passwordValid) {
-      const token = generateToken(user);
-      res.status(200).json({ 
-        message: `Welcome, ${user.username}!`, token})
-    } else {
-      res.status(401).json({ message: "Please try to login again!"})
+router.post('/register', (req, res) => {
+    let user = req.body;
+    if (!user.username) {
+      res.status(422).json({message: "Missing fields: username"})
     }
-  } catch (error) {
-    next(error)
-  }
+    if (!user.firstName) {
+        res.status(422).json({message: "Missing fields: first name"})
+    }
+    if (!user.lastName) {
+        res.status(422).json({message: "Missing fields: last name"})
+    }
+    if (!user.email) {
+        res.status(422).json({message: "Missing fields: email"})
+    }
+    if (!user.password) {
+        res.status(422).json({message: "Missing fields: password"})
+    }
+    const hash = bcrypt.hashSync(user.password, 10);
+    user.password = hash
+
+    Users.add(user)
+    .then(user => {
+        res.status(201).json(user);
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
 })
 
+router.post('/login', (req, res) => {
+    let {username, password} = req.body;
+    Users.findBy({username})
+    .first()
+    .then(user => {
+        if (user && bcrypt.compareSync(password, user.password)) {
+            const token = tokenMaker.generateToken(user);
+            const id = user.id;
+            res.status(200).json({
+                message: `Welcome ${user.firstName} ${user.lastName}!`,
+                token,
+                id
+            })
+        } else {
+            res.status(401).json({message: "Credentials are invalid"});
+        }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json(err);
+    })
+})
 
 module.exports = router;

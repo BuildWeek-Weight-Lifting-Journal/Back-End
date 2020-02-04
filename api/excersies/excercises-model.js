@@ -3,55 +3,55 @@ const db = require('../../data/dbConfig');
 module.exports = {
     add,
     find,
-    findBy,
+    findByRegion,
     findById,
     update,
     remove
 }
 
 function find() {
-    return db('users')
-    .select();
+    return db('exercises')
+    .select('*');
 }
 
-function findBy(filter) {
-    return db('users')
-    .where(filter);
+function findByRegion(region) {
+    return db('exercises')
+    .select('name')
+    .where({region});
 }
 
 function findById(id) {
-    return db('users')
-    .select('id', 'username', 'email', 'firstName', 'lastName')
+    return db('exercises')
+    .select('name', 'region')
     .where({id})
     .first();
 }
 
-function add(user) {
-    return db('users')
-    .insert(user)
+function add(exercise) {
+    return db('exercises')
+    .insert(exercise)
     .then(ids => {
-        const [id] = ids; 
-        return db('users')
-        .select('id', 'username', 'email', 'firstName', 'lastName')
+        const [id] = ids;
+        return db('exercises')
         .where({id})
         .first();
     })
 }
 
 function update(id, changes) {
-    return db('users')
+    return db('exercises')
     .where('id', id)
     .update(changes)
     .then(ids => {
         const [id] = ids;
-        return db('users')
+        return db('exercises')
         .where({id})
         .first();
     })
 }
 
 function remove(id) {
-    return db('users')
+    return db('exercises')
     .where({id})
-    .delete()
+    .delete();
 }
