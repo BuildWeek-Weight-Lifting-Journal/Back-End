@@ -28,7 +28,7 @@ server.use('/api/journals', journalRouter);
 server.use('/api/jouexe', jouexeRouter);
 
 server.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname+'/index.html'))
+    res.redirect('https://documenter.getpostman.com/view/9002882/SWTEdwUH?version=latest')
     
 })
 
