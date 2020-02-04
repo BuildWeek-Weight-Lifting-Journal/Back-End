@@ -150,8 +150,8 @@
             <li class="moreInfo" onclick="{showContent('getUserById')}">Get User by ID</li>
             <li class="moreInfo" onclick="{showContent('getWorkoutByUser')}">Get All Workout</li>
             <li class="moreInfo" onclick="{showContent('getUserWorkoutById')}">Get Workout by ID</li>
-            <li class="moreInfo" onclick="{showContent('getGuest')}">Get all Journal</li>
-            <li class="moreInfo" onclick="{showContent('getFoodNeeded')}">Get Journal by ID</li>           
+            <li class="moreInfo" onclick="{showContent('getJournal')}">Get all Journal</li>
+            <li class="moreInfo" onclick="{showContent('getJournalById')}">Get Journal by ID</li>           
           </ul>
           </div>
           
@@ -576,11 +576,11 @@
     <!-- Event Endpoint - Get Guests --> 
     <div id="getUserWorkoutById" class="hid">
       <h3 onclick="{showContent('getUserWorkoutById')}">Event Endpoints - Get All Guests </h3>
-        <p><strong>Endpoint:</strong> `/api/guests/`</p>
+        <p><strong>Endpoint:</strong> `/api/users/{id}/workout/{id}`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
-          Get a list of all guests
+          Get a a specific user workout
         </code>
         <p><strong>Expected Input:</strong> </p>
         <code>
@@ -592,18 +592,14 @@
         <p><strong>Expected Return:</strong> </p>
         <code>
           [<br /><div class="ident1">
-              { <br />
-                "guestname": "Jane", <br />
-                "guestemail": "jane@email.com" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jack", <br />
-                "guestemail": "jack@email.com" <br />
-              }, <br />
-              { <br />
-                "guestname": "Jill", <br />
-                "guestemail": "jill@email.com" <br />
-              } <br />
+            {
+              "id": 4,
+              "date": "12-12-2019",
+              "upper_body": "chdest",
+              "lower_body": "Nodne",
+              "core": "abds",
+              "users_id": 1
+            } <br />
           </div>
           ]
         </code>
@@ -615,13 +611,13 @@
     </div>
   
     <!-- Event Endpoint - Get Guest --> 
-    <div id="getGuest" class="hid">
-      <h3 onclick="{showContent('getUserWorkoutById')}">Event Endpoints - Get Guest by id </h3>
-        <p><strong>Endpoint:</strong> `/api/guests/{id}`</p>
+    <div id="getJournal" class="hid">
+      <h3 onclick="{showContent('getJournal')}">Event Endpoints - Get user journal </h3>
+        <p><strong>Endpoint:</strong> `/api/users/{id}/journal`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
-          Get a guest by id
+          Get a users journal
         </code>
         <p><strong>Expected Input:</strong> </p>
         <code>
@@ -632,12 +628,7 @@
         </code>
         <p><strong>Expected Return:</strong> </p>
         <code>
-          {<br />
-          <div class="ident1">
-            "guestname": "Jane", <br />
-            "guestemail": "jane@email.com" <br />
-          </div>
-          }
+          <br/>
         </code>
         <p><strong>Expected Return if Fails:</strong> </p>
         <code>
@@ -647,9 +638,9 @@
     </div>
   
     <!-- Event Endpoint - Get Food Needed for Event  --> 
-    <div id="getFoodNeeded" class="hid">
-      <h3 onclick="{showContent('getFoodNeeded')}">Event Endpoints - Get Food Needed for Event </h3>
-        <p><strong>Endpoint:</strong> `/api/events/{id}/foodneeded`</p>
+    <div id="getJournalById" class="hid">
+      <h3 onclick="{showContent('getJournalById')}">Event Endpoints - Get journal by id </h3>
+        <p><strong>Endpoint:</strong> `/api/users/{id}/journal/{id}`</p>
         <p><strong>Type:</strong> `GET`</p>
         <p><strong>Description:</strong> </p>
         <code>
@@ -661,32 +652,8 @@
         </code>
         <p><strong>Expected Return:</strong> </p>
         <code>
-        [ <br />
-          <div class="ident1">
-          { <br />
-            "id": 1, <br />
-            "foodname": "Hamburgers", <br />
-            "food_needed_id": 1, <br />
-            "quantity_needed": 24, <br />
-            "description": "hamburger meat", <br />
-            "category": "meat", <br />
-            "vegetarian": "0", <br />
-            "vegan": "0", <br />
-            "gutenfree": null <br />
-          }, <br />
-          { <br />
-            "id": 2, <br />
-            "foodname": "Hamburger Buns", <br />
-            "food_needed_id": 2, <br />
-            "quantity_needed": 24, <br />
-            "description": null, <br />
-            "category": "bread", <br />
-            "vegetarian": "1", <br />
-            "vegan": null, <br />
-            "gutenfree": "0" <br />
-          } <br />
-          </div>
-        ]
+         <br />
+          
         </code>
         <p><strong>Expected Return if Fails:</strong> </p>
         <code>
@@ -695,167 +662,7 @@
         </code>
     </div>
   
-    <!-- Event Endpoint - Get Guest Bringing Item  --> 
-    <div id="getBringingbyGuest" class="hid">
-        <h3 onclick="{showContent('getBringingbyGuest')}">Event Endpoints - Get Guest Bringing Item</h3>
-          <p><strong>Endpoint:</strong> `/api/events/{id}/{guestid}/bringing`</p>
-          <p><strong>Type:</strong> `GET`</p>
-          <p><strong>Description:</strong> </p>
-          <code>
-            returns an array of foods a guest is brining by guestid
-          </code>
-          <p><strong>Sample Request:</strong> </p>
-          <code>
-            <br />
-          </code>
-          <p><strong>Expected Return:</strong> </p>
-          <code>
-          [ <br />
-            <div class="ident1">
-                [<br />
-                {<br />
-                  "guestname": "Jack",<br />
-                  "foodname": "Hamburgers",<br />
-                  "quantity": 12<br />
-                }<br />
-              ]<br />
-            </div>
-          ]
-          </code>
-          <p><strong>Expected Return if Fails:</strong> </p>
-          <code>
-              status code: 500 <br />
-              { message: 'Failed to get results.' }
-          </code>
-      </div>
-  
-  </div>
-  
-  <div id="get_Food_Endpoints">
-      <!-- Event Endpoint - Get Categories --> 
-      <div id="getFood" class="hid">
-        <h3 onclick="{showContent('getFood')}">Event Endpoints - Get Food </h3>
-          <p><strong>Endpoint:</strong> `/api/food/`</p>
-          <p><strong>Type:</strong> `GET`</p>
-          <p><strong>Description:</strong> </p>
-          <code>
-            Get list of Categories.
-          </code>
-          <p><strong>Expected Input:</strong> </p>
-          <code>
-          </code>
-          <p><strong>Sample Request:</strong> </p>
-          <code>
-          </code>
-          <p><strong>Expected Return:</strong> </p>
-          <code> <span class="comment">// Should return an array of food objects</span> <br />
-            [ <br />
-            <div class="ident1"> 
-            </div>
-            ]
-          </code>
-          <p><strong>Expected Return if Fails:</strong> </p>
-          <code>
-            status code: 500<br />
-            { message: 'Failed to get results.' }
-          </code>
-      </div>
     
-      <!-- Event Endpoint - Get Food by ID --> 
-      <div id="getFoodbyID" class="hid">
-        <h3 onclick="{showContent('getFoodbyID')}">Event Endpoints - Get Food by ID </h3>
-          <p><strong>Endpoint:</strong> `/api/food/:id/`</p>
-          <p><strong>Type:</strong> `GET`</p>
-          <p><strong>Description:</strong> </p>
-          <code>
-            Get info on a Food by its id in database.
-          </code>
-          <p><strong>Expected Input:</strong> </p>
-          <code>
-          </code>
-          <p><strong>Sample Request:</strong> </p>
-          <code>
-          </code>
-          <p><strong>Expected Return:</strong> </p>
-          <code> <span class="comment">// Should return an object</span> <br />
-            { <br />
-            }
-          </code>
-          <p><strong>Expected Return if Fails:</strong> </p>
-          <code>
-            status code: 500<br />
-            { message: 'Failed to get results.' }
-          </code>
-      </div>
-  
-    <!-- Event Endpoint - Get Categories --> 
-    <div id="getCategories" class="hid">
-      <h3 onclick="{showContent('getCategories')}">Event Endpoints - Get Categories </h3>
-        <p><strong>Endpoint:</strong> `/api/food/categories/all`</p>
-        <p><strong>Type:</strong> `GET`</p>
-        <p><strong>Description:</strong> </p>
-        <code>
-          Get list of Categories.
-        </code>
-        <p><strong>Expected Input:</strong> </p>
-        <code>
-        </code>
-        <p><strong>Sample Request:</strong> </p>
-        <code>
-        </code>
-        <p><strong>Expected Return:</strong> </p>
-        <code>
-          [ <br />
-          <div class="ident1"> 
-          { <br />
-            "id": 1, <br />
-            "category": "bread", <br />
-            "description": "breads made from either flour, oats, rye, etc" <br />
-          }, <br />
-          { <br />
-            "id": 2, <br />
-            "category": "meat", <br />
-            "description": "meats" <br />
-          } <br />
-          </div>
-          ]
-        </code>
-        <p><strong>Expected Return if Fails:</strong> </p>
-        <code>
-          status code: 500<br />
-          { message: 'Failed to get results.' }
-        </code>
-    </div>
-  
-    <!-- Event Endpoint - Get Category --> 
-    <div id="getCategory" class="hid">
-      <h3 onclick="{showContent('getCategory')}">Event Endpoints - Get Category </h3>
-        <p><strong>Endpoint:</strong> `/api/food/categories/:id/`</p>
-        <p><strong>Type:</strong> `GET`</p>
-        <p><strong>Description:</strong> </p>
-        <code>
-          Get info on a Category.
-        </code>
-        <p><strong>Expected Input:</strong> </p>
-        <code>
-        </code>
-        <p><strong>Sample Request:</strong> </p>
-        <code>
-        </code>
-        <p><strong>Expected Return:</strong> </p>
-        <code>
-          { <br />
-            "id": 1, <br />
-            "category": "bread", <br />
-            "description": "breads made from either flour, oats, rye, etc" <br />
-          }
-        </code>
-        <p><strong>Expected Return if Fails:</strong> </p>
-        <code>
-          status code: 500<br />
-          { message: 'Failed to get results.' }
-        </code>
-    </div>
   
   </div>
   
