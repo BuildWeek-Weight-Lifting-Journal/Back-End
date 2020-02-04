@@ -1,23 +1,23 @@
 module.exports = {
 
-  // dev: {
-  //   client: 'sqlite3',
-  //   useNullAsDefault: true,
-  //   connection: {
-  //     filename: './data/weight.db3'
-  //   },
-  //   pool: {
-  //     afterCreate: (conn, done) => {
-  //       conn.run("PRAGMA foreign_keys = ON", done)
-  //     },
-  //   },
-  //   migrations: {
-  //     directory: "./data/migrations",
-  //   },
-  //   seeds: {
-  //     directory: "./data/seeds",
-  //   },
-  // },
+  dev: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: './data/weight.db3'
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done)
+      },
+    },
+    migrations: {
+      directory: "./data/migrations",
+    },
+    seeds: {
+      directory: "./data/seeds",
+    },
+  },
   test: {
     client: 'sqlite3',
     useNullAsDefault: true,
@@ -32,23 +32,23 @@ module.exports = {
     },
 },
 
-// staging: {
-//   client: 'pg',
-//   connection: {
-//     filename: './data/weight.db3'
-//   },
-//   pool: {
-//     afterCreate: (conn, done) => {
-//       conn.run('PRAGMA foreign_keys = ON', done);
-//     },
-//   },
-//   migrations : {
-//     directory: './data/migrations'
-//   },
-//   seeds: {
-//     directory: './data/seeds'
-//   },
-// },
+staging: {
+  client: 'pg',
+  connection: {
+    filename: './data/weight.db3'
+  },
+  pool: {
+    afterCreate: (conn, done) => {
+      conn.run('PRAGMA foreign_keys = ON', done);
+    },
+  },
+  migrations : {
+    directory: './data/migrations'
+  },
+  seeds: {
+    directory: './data/seeds'
+  },
+},
 
 production: {
   client: 'pg',

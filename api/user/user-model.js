@@ -34,18 +34,14 @@ function findById(id) {
 function insert(user) {
     return db('users')
         .insert(user, 'id')
-        .then(([id]) => findById(id))
+        .returning('*')
 };
 
 function update(user, id) {
     return db('users')
         .where({id})
         .update(user)
-        .then(count => {
-            if(count > 0) {
-                return findById(id)
-            }
-        });
+        .returning('*')
 };
 
 function remove(id) {
@@ -68,9 +64,7 @@ function findJournalById(id) {
 function insertJournal(Journal) {
     return db('journals')
         .insert(Journal,'id')
-        .then(([id]) => {
-            return findJournalById(id)
-        })
+        .returning('*')
        
 };
 
@@ -78,9 +72,7 @@ function updateJournal(Journal, id) {
     return db('journals')
         .where({id})
         .update(Journal)
-        .then(count => {
-            return count
-        })
+        .returning('*')
         
 };
 
