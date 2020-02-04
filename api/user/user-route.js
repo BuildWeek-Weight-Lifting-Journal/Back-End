@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const Users = require('./user-model');
 const restricted = require('../middleware/auth');
 
-router.get('/', restricted, (req, res) => {
+router.get('/',  (req, res) => {
     Users.find()
     .then(users => {
         res.status(200).json(users);
@@ -14,7 +14,7 @@ router.get('/', restricted, (req, res) => {
     })
 })
 
-router.get('/:id', restricted, (req, res) => {
+router.get('/:id',  (req, res) => {
     Users.findById(req.params.id)
     .then(user => {
         res.status(200).json(user);
@@ -56,7 +56,7 @@ router.put('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id',  (req, res) => {
     Users.remove(req.params.id)
     .then(count => {
         if (count > 0) {

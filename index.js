@@ -12,7 +12,6 @@ const exerciseRouter = require('./api/excersies/exercises-router');
 const journalRouter = require('./api/journals/journal-router');
 const jouexeRouter = require('./api/journalsExcersise/je-router')
 
-const auth = require('./api/middleware/auth')
 
 
 const port = process.env.PORT || 5000
