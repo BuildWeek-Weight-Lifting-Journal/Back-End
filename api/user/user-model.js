@@ -29,25 +29,14 @@ function findById(id) {
 function add(user) {
     return db('users')
     .insert(user)
-    .then(ids => {
-        const [id] = ids; 
-        return db('users')
-        .select('id', 'username', 'email', 'firstName', 'lastName')
-        .where({id})
-        .first();
-    })
+    .returning('*')
 }
 
 function update(id, changes) {
     return db('users')
     .where('id', id)
     .update(changes)
-    .then(ids => {
-        const [id] = ids;
-        return db('users')
-        .where({id})
-        .first();
-    })
+    .returning('*')
 }
 
 function remove(id) {
