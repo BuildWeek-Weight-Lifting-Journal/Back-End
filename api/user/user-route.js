@@ -31,16 +31,16 @@ router.get('/:id', (req, res) => {
       })
 });
 
-router.get('/:id/workouts', (req, res) => {
+router.get('/:id/journals', (req, res) => {
   const { id } = req.params
   
-  userModel.findWorkouts(id)
-      .then(workouts => {
-          res.status(200).json(workouts)
+  userModel.findJournals(id)
+      .then(journals => {
+          res.status(200).json(journals)
       })
       .catch(err => {
           console.log(err)
-          res.status(500).json({message: "Unable to find workouts"})
+          res.status(500).json({message: "Unable to find journals"})
       })
 });
 
@@ -92,66 +92,66 @@ router.delete('/:id', (req, res) => {
   })
 });
 
-router.get('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params
+router.get('/:id/journals/:journalId', (req, res) => {
+  const { journalId } = req.params
 
-  userModel.findWorkoutById(workoutId)
-      .then(workout => {
-          res.status(200).json(workout)
+  userModel.findJournalById(journalId)
+      .then(journal => {
+          res.status(200).json(journal)
       })
       .catch(err => {
           console.log(err)
-          res.status(500).json({message: "Unable to find workout"})
+          res.status(500).json({message: "Unable to find journal"})
       })
 });
 
-router.post('/:id/workout', (req, res) => {
+router.post('/:id/journal', (req, res) => {
   const { id } = req.params;
-  const workout = req.body;
+  const journal = req.body;
   console.log(req.params, req.body)
 
-  userModel.insertWorkout({...workout, users_id: id})
-      .then(workout => {
-          res.status(200).json(workout)
+  userModel.insertJournal({...journal, users_id: id})
+      .then(journal => {
+          res.status(200).json(journal)
       })
       .catch(err => {
           console.log(err)
-          res.status(500).json({message: "Unable to add a new workout"})
+          res.status(500).json({message: "Unable to add a new journal"})
       })
 });
 
-router.put('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params;
-  const workout = req.body;
+router.put('/:id/journals/:journalId', (req, res) => {
+  const { journalId } = req.params;
+  const journal = req.body;
 
-  userModel.updateWorkout(workout, workoutId)
+  userModel.updateJournal(journal, journalId)
       .then(count => {
           if (count > 0) {
-              res.status(200).json({messgae: `${count} workout was updated`})
+              res.status(200).json({messgae: `${count} journal was updated`})
           } else {
-              res.status(400).json({messgae: "Could not edit workout at this id"})
+              res.status(400).json({messgae: "Could not edit journal at this id"})
           }
       })
       .catch(err => {
           console.log(err)
-          res.status(500).json({message: "Unable to edit workout"})
+          res.status(500).json({message: "Unable to edit journal"})
       })
 });
 
-router.delete('/:id/workouts/:workoutId', (req, res) => {
-  const { workoutId } = req.params;
+router.delete('/:id/journals/:journalId', (req, res) => {
+  const { journalId } = req.params;
 
-  userModel.removeWorkout(workoutId)
+  userModel.removeJournal(journalId)
       .then(count=> {
           if(count > 0) {
-              res.status(200).json({message: `${count} workout has been removed`})
+              res.status(200).json({message: `${count} journal has been removed`})
           } else {
-              res.status(404).json({message: 'workout with this id not found'})
+              res.status(404).json({message: 'journal with this id not found'})
           }
       })
       .catch(err => {
           console.log(err)
-          res.status(500).json({message: 'Unable to delete workout'})
+          res.status(500).json({message: 'Unable to delete journal'})
       })
 });
 

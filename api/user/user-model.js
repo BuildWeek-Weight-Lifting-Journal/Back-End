@@ -7,11 +7,11 @@ module.exports = {
     insert,
     update, 
     remove,
-    findWorkouts,
-    findWorkoutById,
-    insertWorkout,
-    updateWorkout,
-    removeWorkout,
+    findJournals,
+    findJournalById,
+    insertJournal,
+    updateJournal,
+    removeJournal,
 
 
 };
@@ -54,38 +54,38 @@ function remove(id) {
         .del();
 };
 
-function findWorkouts(usersId) {
-    return db('workouts')
+function findJournals(usersId) {
+    return db('journals')
         .where({users_id: usersId})
 };
 
-function findWorkoutById(id) {
-    return db('workouts')
+function findJournalById(id) {
+    return db('journals')
         .where({id: id})
         .first()
 };
 
-function insertWorkout(workout) {
-    return db('workouts')
-        .insert(workout,'id')
+function insertJournal(Journal) {
+    return db('journals')
+        .insert(Journal,'id')
         .then(([id]) => {
-            return findWorkoutById(id)
+            return findJournalById(id)
         })
        
 };
 
-function updateWorkout(workout, id) {
-    return db('workouts')
+function updateJournal(Journal, id) {
+    return db('journals')
         .where({id})
-        .update(workout)
+        .update(Journal)
         .then(count => {
             return count
         })
         
 };
 
-function removeWorkout(id) {
-    return db('workouts')
+function removeJournal(id) {
+    return db('journals')
         .where({id})
         .del();
         

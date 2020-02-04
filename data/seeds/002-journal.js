@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
 
-  return knex('workouts').insert([   
+  return knex('journal').insert([   
     {
       date: "12-12-2019",
       upper_body: "chest",
