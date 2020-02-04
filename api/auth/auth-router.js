@@ -1,19 +1,8 @@
-const router = require('express').Router();
+const express = require('express')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-
+const { generateToken } = require('../auth/generateToken')
 const userModel = require('../user/user-model')
-
-const generateToken = user => {
-  const payload = {
-    sub: user.id,
-    username: user.username,
-  }
-  const options = {
-    expiresIn: '1d',
-  }
-  return jwt.sign(payload, process.env.JWT_SECRET, options)
-}
+const router = express.Router()
 
 router.post('/register', async (req, res) => {
   // implement registration  
@@ -30,25 +19,23 @@ console.log(req.body)
   }
 });
 
-router.post('/login', async (req, res) => {
-  // implement login
-  let { username, password } = req.body;
+router.post("/login", async (req, res, next) => {
   try {
-    const login = await userModel.findBy({ username }).first()
-    
-    if (login && bcrypt.compareSync(password, login.password)) {
-      const token = generateToken(login)
-      res.status(200).json({
-        message: `Welcome ${login.username}!`,
-        token 
-      })
+    const { username, password } = req.body
+    const user = await userModel.findBy({ username }).first()
+    const passwordValid = await bcrypt.compare(password, user.password)
+
+    if (user && passwordValid) {
+      const token = generateToken(user);
+      res.status(200).json({ 
+        message: `Welcome, ${user.username}!`, token})
+    } else {
+      res.status(401).json({ message: "Please try to login again!"})
     }
-  } catch(err) {
-    console.log(err)
-    res.status(500).json({
-      error: err.message
-    })
+  } catch (error) {
+    next(error)
   }
-});
+})
+
 
 module.exports = router;
