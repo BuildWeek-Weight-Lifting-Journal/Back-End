@@ -33,5 +33,8 @@ server.get('/', (req, res) => {
 })
 
 
-
-server.listen(port, () => console.log(`Server is running at port: ${port}`))
+if (!module.parent) {
+    server.listen(port, () => {
+        console.log(`Server is running at port: ${port}`)
+    })
+}
