@@ -42,23 +42,14 @@ function findExerciseByJournalByUserId(id, userId) {
 function add(journal) {
     return db('journals')
     .insert(journal)
-    .then(ids => {
-        const [id] = ids;
-        return db('journals')
-        .where({id})
-        .first();
-    })
+    .returning('*')
 }
 
 function update(id, changes) {
     return db('journals')
     .where('id', id)
     .update(changes)
-    .then(() => {
-        return db('journals')
-        .where({id})
-        .first();
-    })
+    .returning('*')
 }
 
 function remove(id) {

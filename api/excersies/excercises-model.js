@@ -30,24 +30,18 @@ function findById(id) {
 function add(exercise) {
     return db('exercises')
     .insert(exercise)
-    .then(ids => {
-        const [id] = ids;
-        return db('exercises')
-        .where({id})
+    .returning('*')
         .first();
-    })
+    
 }
 
 function update(id, changes) {
     return db('exercises')
     .where('id', id)
     .update(changes)
-    .then(ids => {
-        const [id] = ids;
-        return db('exercises')
-        .where({id})
+    .returning('*')
         .first();
-    })
+    
 }
 
 function remove(id) {
