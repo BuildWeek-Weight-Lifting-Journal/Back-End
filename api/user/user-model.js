@@ -32,12 +32,17 @@ function add(user) {
     .returning('*')
 }
 
-function update(id, changes) {
-    return db('users')
-    .where('id', id)
-    .update(changes)
-    .returning('*')
-}
+// function update(id, changes) {
+//     return db('users')
+//     .where('id', id)
+//     .update(changes)
+//     .returning('*')
+// }
+
+async function update(changes, id) {
+    const results = await db('users').where({ id }).update(changes);
+    return findById(id);
+  }
 
 function remove(id) {
     return db('users')

@@ -3,6 +3,7 @@ const request = require('supertest');
 const db = require('../../data/dbConfig');
 
 // Server file
+//dont cap user
 const Users = require('./user-model');
 
 // test setup content
@@ -162,7 +163,7 @@ describe('Users Model', () => {
       // expected input
       const changeData = { 
         username: 'updateduser', 
-        email: 'updatdemail@email.com',
+        email: 'updatedemail@email.com',
         firstName: 'updateddarren',
         password: 'updatedtestpass',
         lastName: 'updatedtest'   
@@ -174,10 +175,10 @@ describe('Users Model', () => {
       
       expect(users.length).toBe(3);
       expect(users[0].username).toEqual('updateduser');
-      expect(users[0].email).toEqual('updatdemail@email.com');
-      expect(users[0].firstName).toEqual('updatddarren');
-      expect(users[0].lastName).toEqual('updatdtestpass');
-      expect(users[0].password).toEqual('updatdtest');
+      expect(users[0].email).toEqual('updatedemail@email.com');
+      expect(users[0].firstName).toEqual('updateddarren');
+      expect(users[0].lastName).toEqual('updatedtest');
+      expect(users[0].password).toEqual('updatedtestpass');
     });
   });
   
@@ -196,13 +197,7 @@ describe('Users Model', () => {
       expect(users.length).toBe(2);
     });
 
-    // it('should return the user information removed', async () => {
-
-    //   const user = await Users.remove(1);
-
-    //   expect(user.id).toBe(1);
-    //   expect(user.username).toEqual('user');
-    // });
+    
   })
 
 });

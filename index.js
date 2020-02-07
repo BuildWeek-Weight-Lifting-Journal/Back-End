@@ -22,10 +22,10 @@ server.use(cors())
 server.use(express.json())
 
 server.use('/api/auth',  authRouter); 
-server.use('/api/users', usersRouter)
-server.use('/api/exercises', exerciseRouter);
-server.use('/api/journals', journalRouter);
-server.use('/api/jouexe', jouexeRouter);
+server.use('/api/users',  usersRouter)
+server.use('/api/exercises',  exerciseRouter);
+server.use('/api/journals',  journalRouter);
+server.use('/api/jouexe',  jouexeRouter);
 
 server.get('/', (req, res) => {
     res.redirect('https://documenter.getpostman.com/view/9002882/SWTEdwUH?version=latest')
